@@ -266,7 +266,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     param.color = WHITE
     littleFont = generator.generateFont(param)
     param.color = BLACK
-    param.size = 35
+    param.size = 20
     nameFont = generator.generateFont(param)
     param.color = ORANGE
     param.size = 42
