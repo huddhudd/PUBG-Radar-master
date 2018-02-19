@@ -260,7 +260,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     val param = FreeTypeFontParameter()
     param.size = 50
     param.characters = DEFAULT_CHARS
-    param.color = RED
+    param.color = WHITE
     largeFont = generator.generateFont(param)
     param.size = 30
     param.color = WHITE
@@ -269,7 +269,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     param.size = 20
     nameFont = generator.generateFont(param)
     param.color = ORANGE
-    param.size = 42
+    param.size = 25
     itemFont = generator.generateFont(param)
     generator.dispose()
   }
@@ -390,8 +390,10 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                 sx > 0 && sx < windowWidth &&
                 syFix > 0 && syFix < windowHeight
               ) {
-                //draw(iconImages[it], sx, syFix)
+                draw(iconImages[it], sx, syFix)
                 itemFont.draw(spriteBatch,"$items" , sx, syFix)
+                itemFont.draw(spriteBatch,"$items" , sx - 4, windowHeight - sy - 2)
+
               } else {
 
               }
@@ -612,15 +614,15 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
               )
 
           val epic = when (finalColor) {
-            sniperColor, suppressorColor, rareScopeColor -> false//true
+            sniperColor, suppressorColor, rareScopeColor -> true //false
             else -> false
           }
           val rare = when (finalColor) {
-            rareWeaponColor, rareArmorColor -> false//true
+            rareWeaponColor, rareArmorColor -> true //false
             else -> false
           }
           val normal = when (finalColor) {
-            rareAttachColor, healItemColor -> false//true
+            rareAttachColor, healItemColor ->  false //true
             else -> false
           }
 
@@ -633,7 +635,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           when {
             epic -> {
               // Triangle
-              color = BLACK
+              color = RED
               triangle(x, y - triBackRadius,
                       x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
                       x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
@@ -641,16 +643,19 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
               triangle(x, y - triRadius,
                       x - triRadius * 0.866f, y + triRadius * 0.5f,
                       x + triRadius * 0.866f, y + triRadius * 0.5f)
+
+                  //    nameFont.draw(spriteBatch, 'Epic', sx + 2, windowHeight - sy - 2)
             }
             rare -> {
               // Square
-              color = BLACK
+              color = GREEN
               rect(x - backgroundRadius,
                       y - backgroundRadius,
                       backgroundRadius * 2,
                       backgroundRadius * 2)
               color = finalColor
               rect(x - radius, y - radius, radius * 2, radius * 2)
+          //    nameFont.draw(spriteBatch, 'rare', sx + 2, windowHeight - sy - 2)
             }
             normal -> {
               // Circle
