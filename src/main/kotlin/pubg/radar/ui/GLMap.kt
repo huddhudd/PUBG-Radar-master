@@ -263,14 +263,14 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     param.characters = DEFAULT_CHARS
     param.color = WHITE
     largeFont = generator.generateFont(param)
-    param.size = 30
+    param.size = 20
     param.color = WHITE
     littleFont = generator.generateFont(param)
     param.color = BLACK
-    param.size = 15
+    param.size = 6
     nameFont = generator.generateFont(param)
     param.color = ORANGE
-    param.size = 15
+    param.size = 8
     itemFont = generator.generateFont(param)
     generator.dispose()
   }
@@ -397,9 +397,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                 sx > 0 && sx < windowWidth &&
                 syFix > 0 && syFix < windowHeight
               ) {
-                draw(iconImages[it], sx, syFix)
-                itemFont.draw(spriteBatch,"$items" , sx, syFix)
-                itemFont.draw(spriteBatch,"$items" , sx - 4, windowHeight - sy - 2)
+                draw(iconImages[it], sx - 4, windowHeight - sy - 2)
+                //draw(iconImages[it], sx, syFix)
+                //itemFont.draw(spriteBatch,"$items" , sx - 4, windowHeight - sy - 2)
 
               } else {
 
@@ -608,8 +608,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           if (finalColor.a == 0f)
             finalColor.set(
                 when {
-                  "Mini" in items || "Ak" in items || "Scar" in items -> rareWeaponColor
-                  "98k" in items || "m416" in items || "Sks" in items -> sniperColor
+                  "m416" in items || "Ak" in items || "Scar" in items || "m16" in items -> ARiflesColor
+                  "Mini" in items || "Sks" in items -> sniperColor
                   "AR.Supp" in items || "S.Supp" in items -> suppressorColor
                   "armor3" in items || "helmet3" in items -> rareArmorColor
                   "4x" in items || "8x" in items -> rareScopeColor
@@ -617,74 +617,146 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                   "AR.Ext" in items || "S.Ext" in items || "AR.Comp" in items || "S.Comp" in items -> rareAttachColor
                   "A.Grip" in items || "V.Grip" in items -> rareAttachColor
                   "FirstAid" in items || "MedKit" in items -> healItemColor
+                  "98k" in  items -> k98Color
+                  "Ump" in items || "Pan" in items -> UmpandPanColor
                   else -> normalItemColor
                 }
               )
+/*
+Adding a bunch of different shapes/colors for certain backgroundRadius
 
-          val epic = when (finalColor) {
-            sniperColor, suppressorColor, rareScopeColor -> true //false
+m4/ak/scar/m16 Lime Green Circle
+lvl3armor LIGHT BLUE Circle
+
+mini/sks ORANGERED Square
+kar98k Brown Square
+
+ump and Pan Pink Triangle
+AR and Sniper Suppressor White Triangle
+4x / 8x Scopes Gold Triangle
+
+*/
+          val ARifles = when (finalColor) {
+          ARiflesColor -> true //m4/ak/scar/m16 LIME GREEN
+          else -> false
+          }
+
+          val lvl3Armor = when (finalColor) {
+          rareArmorColor -> true //lvl3armor LIGHT BLUE
+          else -> false
+          }
+
+          val SniperGuns = when (finalColor) {
+          sniperColor -> true // mini/sks ORANGERED
+          else -> false
+          }
+
+          val k98Gun = when (finalColor) {
+          k98Color -> true //kar98k
+          else -> false
+          }
+
+          val UmpandPan = when (finalColor) {
+            UmpandPanColor ->  true //ump and Pan
             else -> false
           }
-          val rare = when (finalColor) {
-            rareWeaponColor, rareArmorColor -> true //false
+
+          val asSUP = when (finalColor) {
+            suppressorColor ->  true //AR and Sniper Suppressor
             else -> false
           }
-          val normal = when (finalColor) {
-            rareAttachColor, healItemColor ->  false //true
+
+          val Scopes = when (finalColor) {
+            rareScopeColor ->  true //4x / 8x Scopes
             else -> false
           }
 
           val backgroundRadius = (itemRadius + 50f)
           val radius = itemRadius
 
-          val triBackRadius = backgroundRadius * 1.5f
-          val triRadius = radius * 1.5f
+          val triBackRadius = backgroundRadius * 0.866f //1.5f
+          val triRadius = radius * 0.866f //1,5f
 
           when {
-            epic -> {
-              // Epic = m416, K98, SKS, Supressors, 4x, 8x
-              // Triangle
-              color = RED
-              triangle(x, y - triBackRadius,
-                      x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
-                      x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
-              //color = finalColor
-              color = RED
-              triangle(x, y - triRadius,
-                      x - triRadius * 0.866f, y + triRadius * 0.5f,
-                      x + triRadius * 0.866f, y + triRadius * 0.5f)
-            }
-
-            rare -> {
-              //Rare = Mini,AK,SCAR, lvl 3 Healm/Vest
-              // Triangle
-              color = GREEN
-              triangle(x, y - triBackRadius,
-                      x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
-                      x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
-            //  color = finalColor
-              color = GREEN
-              triangle(x, y - triRadius,
-                      x - triRadius * 0.866f, y + triRadius * 0.5f,
-                      x + triRadius * 0.866f, y + triRadius * 0.5f)
-          /*  rare -> {
-              // Square
-              color = GREEN
-              rect(x - backgroundRadius,
-                      y - backgroundRadius,
-                      backgroundRadius * 2,
-                      backgroundRadius * 2)
+            ARifles -> {
+              // Lime Green Circle
               color = finalColor
-              rect(x - radius, y - radius, radius * 2, radius * 2)
-          */
-            }
-            normal -> {
-              // Circle
-              color = BLACK
               circle(x, y, backgroundRadius * 0.9f, 10)
               color = finalColor
               circle(x, y, radius * 0.9f, 10)
             }
+
+            lvl3Armor -> {
+            //lvl3armor LIGHT BLUE Circle
+              color = finalColor
+              circle(x, y, backgroundRadius * 0.9f, 10)
+              color = finalColor
+              circle(x, y, radius * 0.9f, 10)
+            }
+
+            SniperGuns -> {
+              // mini/sks ORANGERED Square
+              color = finalColor
+              rect(x - backgroundRadius, y - backgroundRadius,
+                      backgroundRadius * 2, backgroundRadius * 2)
+              color = finalColor
+              rect(x - radius, y - radius, radius * 2, radius * 2)
+            }
+
+            k98Gun -> {
+              //kar98k Brown Square
+              color = finalColor
+              rect(x - backgroundRadius, y - backgroundRadius,
+                      backgroundRadius * 2, backgroundRadius * 2)
+              color = finalColor
+              rect(x - radius, y - radius, radius * 2, radius * 2)
+            }
+
+            UmpandPan -> {
+              //ump and Pan Pink Triangle
+              color = finalColor
+              triangle(x, y - triBackRadius,
+                      x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
+                      x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
+              color = finalColor
+              triangle(x, y - triRadius,
+                      x - triRadius * 0.866f, y + triRadius * 0.5f,
+                      x + triRadius * 0.866f, y + triRadius * 0.5f)
+            }
+
+            asSUP -> {
+              //AR and Sniper Suppressor White Triangle
+              color = finalColor
+              triangle(x, y - triBackRadius,
+                      x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
+                      x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
+
+              color = finalColor
+              triangle(x, y - triRadius,
+                      x - triRadius * 0.866f, y + triRadius * 0.5f,
+                      x + triRadius * 0.866f, y + triRadius * 0.5f)
+                    }
+
+                    Scopes -> {
+                    //  4x / 8x Scopes Gold Triangle
+                      color = finalColor
+                      triangle(x, y - triBackRadius,
+                              x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
+                              x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
+
+                      color = finalColor
+                      triangle(x, y - triRadius,
+                              x - triRadius * 0.866f, y + triRadius * 0.5f,
+                              x + triRadius * 0.866f, y + triRadius * 0.5f)
+                            }
+    /*          normal -> {
+              // Circle
+              color = BLACK
+              circle(x, y, backgroundRadius * 0.9f, 10)
+              color = BLACK
+              circle(x, y, radius * 0.9f, 10)
+            }
+*/
             else -> {
               // Do nothing
             }
@@ -824,7 +896,24 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     val (actor, x, y, dir) = actorInfo
     val v_x = actor!!.velocity.x
     val v_y = actor.velocity.y
-
+    var itemNameDrawBlacklist = arrayListOf(
+      "AR.Stock",
+      "S.Loops",
+      "S.Comp",
+      "U.Supp",
+      "Choke",
+      "V.Grip",
+      "A.Grip",
+      "556",
+      "762",
+      "Ak",
+      "U.Ext",
+      "AR.Ext",
+      "2x",
+      "Mini",
+      "Vector",
+      "Grenade"
+    )
     val dirVector = dirUnitVector.cpy().rotate(dir).scl(height / 2)
     color = BLACK
     val backVector = dirVector.cpy().nor().scl(height / 2 + 200f)

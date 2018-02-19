@@ -63,6 +63,7 @@ class Item {
             ),
             "Weapon" to mapOf(
                 "HK416" to "m416",
+                "M16" to "m16",
                 "Kar98k" to "98k",
                 "SCAR-L" to "Scar",
                 "AK47" to "Ak",
