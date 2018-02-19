@@ -21,13 +21,16 @@ object PlayerStateCMD : GameListener {
   override fun onGameOver() {
     playerNames.clear()
     playerNumKills.clear()
+    playerHealth.clear()
     uniqueIds.clear()
     teamNumbers.clear()
     attacks.clear()
+
   }
 
   val playerNames = ConcurrentHashMap<NetworkGUID, String>()
   val playerNumKills = ConcurrentHashMap<NetworkGUID, Int>()
+  val playerHealth = ConcurrentHashMap<NetworkGUID, Int>()
   val uniqueIds = ConcurrentHashMap<String, NetworkGUID>()
   val teamNumbers = ConcurrentHashMap<NetworkGUID, Int>()
   val attacks = ConcurrentLinkedQueue<Pair<NetworkGUID, NetworkGUID>>()//A -> B

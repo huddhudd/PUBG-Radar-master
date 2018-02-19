@@ -46,6 +46,7 @@ class Item {
                     ),
                     "Upper" to mapOf(
                         "DotSight" to "R.Dot",
+                      //  "HoloSight" to "Holo",
                         "Aimpoint" to "2x",
                         "ACOG" to "4x",
                         "CQBSS" to "8x"
@@ -61,8 +62,8 @@ class Item {
                 "MedKit" to "MedKit"
             ),
             "Weapon" to mapOf(
-                "HK416" to "M4",
-                "Kar98K" to "98k",
+                "HK416" to "m416",
+                "Kar98k" to "98k",
                 "SCAR-L" to "Scar",
                 "AK47" to "Ak",
                 "SKS" to "Sks",
@@ -77,8 +78,8 @@ class Item {
                 "762mm" to "762"
             ),
             "Armor" to mapOf(
-                "C" to mapOf("01" to mapOf("Lv3" to "Arm3")),
-                "D" to mapOf("01" to mapOf("Lv2" to "Arm2"))
+                "C" to mapOf("01" to mapOf("Lv3" to "armor3")),
+                "D" to mapOf("01" to mapOf("Lv2" to "armor2"))
             ),
             "Back" to mapOf(
                 "C" to mapOf(
@@ -92,10 +93,10 @@ class Item {
             ),
             "Head" to mapOf(
                 "F" to mapOf(
-                    "01" to mapOf("Lv2" to "Helm2"),
-                    "02" to mapOf("Lv2" to "Helm2")
+                    "01" to mapOf("Lv2" to "Helmet2"),
+                    "02" to mapOf("Lv2" to "Helmet2")
                 ),
-                "G" to mapOf("01" to mapOf("Lv3" to "Helm3"))
+                "G" to mapOf("01" to mapOf("Lv3" to "helmet3"))
             )
         ) as Map<String, Any>
 

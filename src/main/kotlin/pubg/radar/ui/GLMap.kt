@@ -91,7 +91,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
 
   fun show() {
     val config = Lwjgl3ApplicationConfiguration()
-    config.setTitle("[${targetAddr.hostAddress} ${sniffOption.name}] - PUBG Radar")
+    config.setTitle("[${targetAddr.hostAddress} ${sniffOption.name}] - Radar")
     config.useOpenGL3(true, 3, 3)
     config.setWindowedMode(1000, 1000)
     config.setResizable(true)
@@ -146,6 +146,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     camera.zoom *= 1.1f.pow(amount)
     return true
   }
+
 
   override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
     if (button == RIGHT) {
@@ -215,17 +216,17 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       "556" to Texture(Gdx.files.internal("icons/556.png")),
       "98k" to Texture(Gdx.files.internal("icons/98k.png")),
       "Mini" to Texture(Gdx.files.internal("icons/Mini.png")),
-      "M4" to Texture(Gdx.files.internal("icons/M4.png")),
+      "m416" to Texture(Gdx.files.internal("icons/M4.png")),
       "Scar" to Texture(Gdx.files.internal("icons/Scar.png")),
       "Ak" to Texture(Gdx.files.internal("icons/Ak.png")),
       "8x" to Texture(Gdx.files.internal("icons/8x.png")),
       "4x" to Texture(Gdx.files.internal("icons/4x.png")),
       "2x" to Texture(Gdx.files.internal("icons/2x.png")),
       "R.Dot" to Texture(Gdx.files.internal("icons/R.Dot.png")),
-      "Arm3" to Texture(Gdx.files.internal("icons/Arm3.png")),
-      "Arm2" to Texture(Gdx.files.internal("icons/Arm2.png")),
-      "Helm3" to Texture(Gdx.files.internal("icons/Helm3.png")),
-      "Helm2" to Texture(Gdx.files.internal("icons/Helm2.png")),
+      "armor3" to Texture(Gdx.files.internal("icons/Arm3.png")),
+      "armor2" to Texture(Gdx.files.internal("icons/Arm2.png")),
+      "helmet3" to Texture(Gdx.files.internal("icons/Helm3.png")),
+      "helmet2" to Texture(Gdx.files.internal("icons/Helm2.png")),
       "Bag3" to Texture(Gdx.files.internal("icons/Bag3.png")),
       "Bag2" to Texture(Gdx.files.internal("icons/Bag2.png")),
       "Pan" to Texture(Gdx.files.internal("icons/Pan.png")),
@@ -266,10 +267,10 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     param.color = WHITE
     littleFont = generator.generateFont(param)
     param.color = BLACK
-    param.size = 20
+    param.size = 15
     nameFont = generator.generateFont(param)
     param.color = ORANGE
-    param.size = 25
+    param.size = 15
     itemFont = generator.generateFont(param)
     generator.dispose()
   }
@@ -363,13 +364,19 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       var itemNameDrawBlacklist = arrayListOf(
         "AR.Stock",
         "S.Loops",
-        "FlashHider",
+        "S.Comp",
+        "U.Supp",
         "Choke",
         "V.Grip",
+        "A.Grip",
         "556",
         "762",
-    //    "Ak",
-  //      "Sks",
+        "Ak",
+        "U.Ext",
+        "AR.Ext",
+        "2x",
+        "Mini",
+        "Vector",
         "Grenade"
       )
       droppedItemLocation.values.asSequence().filter { it.second.isNotEmpty() }
@@ -418,6 +425,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       //draw self
       drawPlayer(LIME, tuple4(null, selfX, selfY, selfDir.angle()))
       drawItem()
+    //  drawItemNames()
       drawAirDrop(zoom)
       drawCorpse()
       drawAPawn(typeLocation, selfX, selfY, zoom, currentTime)
@@ -596,14 +604,14 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           val (x, y) = it.first
           val items = it.second
           val finalColor = it.third
-
+                                          //"U.Supp" in items ||
           if (finalColor.a == 0f)
             finalColor.set(
                 when {
-                  "M4" in items || "Ak" in items || "Scar" in items -> rareWeaponColor
-                  "98k" in items || "Mini" in items || "Sks" in items -> sniperColor
-                  "U.Supp" in items || "AR.Supp" in items || "S.Supp" in items -> suppressorColor
-                  "Arm3" in items || "Helm3" in items -> rareArmorColor
+                  "Mini" in items || "Ak" in items || "Scar" in items -> rareWeaponColor
+                  "98k" in items || "m416" in items || "Sks" in items -> sniperColor
+                  "AR.Supp" in items || "S.Supp" in items -> suppressorColor
+                  "armor3" in items || "helmet3" in items -> rareArmorColor
                   "4x" in items || "8x" in items -> rareScopeColor
                   "AR.ExtQ" in items || "S.ExtQ" in items -> rareAttachColor
                   "AR.Ext" in items || "S.Ext" in items || "AR.Comp" in items || "S.Comp" in items -> rareAttachColor
@@ -634,19 +642,32 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
 
           when {
             epic -> {
+              // Epic = m416, K98, SKS, Supressors, 4x, 8x
               // Triangle
               color = RED
               triangle(x, y - triBackRadius,
                       x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
                       x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
-              color = finalColor
+              //color = finalColor
+              color = RED
               triangle(x, y - triRadius,
                       x - triRadius * 0.866f, y + triRadius * 0.5f,
                       x + triRadius * 0.866f, y + triRadius * 0.5f)
-
-                  //    nameFont.draw(spriteBatch, 'Epic', sx + 2, windowHeight - sy - 2)
             }
+
             rare -> {
+              //Rare = Mini,AK,SCAR, lvl 3 Healm/Vest
+              // Triangle
+              color = GREEN
+              triangle(x, y - triBackRadius,
+                      x - triBackRadius * 0.866f, y + triBackRadius * 0.5f,
+                      x + triBackRadius * 0.866f, y + triBackRadius * 0.5f)
+            //  color = finalColor
+              color = GREEN
+              triangle(x, y - triRadius,
+                      x - triRadius * 0.866f, y + triRadius * 0.5f,
+                      x + triRadius * 0.866f, y + triRadius * 0.5f)
+          /*  rare -> {
               // Square
               color = GREEN
               rect(x - backgroundRadius,
@@ -655,7 +676,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                       backgroundRadius * 2)
               color = finalColor
               rect(x - radius, y - radius, radius * 2, radius * 2)
-          //    nameFont.draw(spriteBatch, 'rare', sx + 2, windowHeight - sy - 2)
+          */
             }
             normal -> {
               // Circle
