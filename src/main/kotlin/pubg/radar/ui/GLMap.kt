@@ -150,7 +150,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
 
   override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
     if (button == RIGHT) {
-      pinLocation.set(pinLocation.set(screenX.toFloat(), screenY.toFloat()).windowToMap())
+    pinLocation.set(pinLocation.set(screenX.toFloat(), screenY.toFloat()).windowToMap())
+
       return true
     } else if (button == LEFT) {
       dragging = true
@@ -295,13 +296,6 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     camera.position.set(selfX + screenOffsetX, selfY + screenOffsetY, 0f)
     camera.update()
 
-    //draw map
-    // paint(camera.combined) {
-    //   draw(map, 0f, 0f, mapWidth, mapWidth,
-    //        0, 0, map.width, map.height,
-    //        false, true)
-    // }
-
     val cameraTileScale = Math.max(windowWidth, windowHeight) / camera.zoom
     var useScale = 0
     when {
@@ -359,7 +353,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       val (x, y) = pinLocation.mapToWindow()
       littleFont.draw(spriteBatch, "$time", x, windowHeight - y)
       safeZoneHint()
-      drawPlayerInfos(typeLocation[Player])
+      //drawPlayerInfos(typeLocation[Player]) //PlayerName etc
 
       var itemNameDrawBlacklist = arrayListOf(
         "AR.Stock",
@@ -385,7 +379,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           val items = it.second
           val finalColor = it.third
 
-          val (sx, sy) = Vector2(x, y).mapToWindow()
+          val (sx, sy) = Vector2(x+16, y-16).mapToWindow()
           val syFix = windowHeight - sy
 
           var yOffset = 2
@@ -397,9 +391,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                 sx > 0 && sx < windowWidth &&
                 syFix > 0 && syFix < windowHeight
               ) {
-                draw(iconImages[it], sx - 4, windowHeight - sy - 2)
+                draw(iconImages[it], sx, syFix)
                 //draw(iconImages[it], sx, syFix)
-                //itemFont.draw(spriteBatch,"$items" , sx - 4, windowHeight - sy - 2)
+                itemFont.draw(spriteBatch,"$items" , sx, syFix)
 
               } else {
 
@@ -635,6 +629,16 @@ ump and Pan Pink Triangle
 AR and Sniper Suppressor White Triangle
 4x / 8x Scopes Gold Triangle
 
+
+//legend
+largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
+                              "Light Blue Circle = Level 3 Helm/Chest\n " +
+                              "Orange Square = Mini/SKS\n"+
+                              "Brown Square = Kar98k\n"+
+                              "Pink Triange = Pan/UMP\n"+
+                              "White Triangle = AR/SR Suppressor\n"+
+                              "Gold Triangle = 4x/8x Scope",  10f, windowHeight - 50f)
+
 */
           val ARifles = when (finalColor) {
           ARiflesColor -> true //m4/ak/scar/m16 LIME GREEN
@@ -827,6 +831,7 @@ AR and Sniper Suppressor White Triangle
     circle(loc.x, loc.y, radius, segments)
   }
 
+
   fun ShapeRenderer.aimAtMe(it: renderInfo, selfX: Float, selfY: Float, currentTime: Long, zoom: Float) {
     //draw aim line
     val (actor, x, y, dir) = it
@@ -896,24 +901,7 @@ AR and Sniper Suppressor White Triangle
     val (actor, x, y, dir) = actorInfo
     val v_x = actor!!.velocity.x
     val v_y = actor.velocity.y
-    var itemNameDrawBlacklist = arrayListOf(
-      "AR.Stock",
-      "S.Loops",
-      "S.Comp",
-      "U.Supp",
-      "Choke",
-      "V.Grip",
-      "A.Grip",
-      "556",
-      "762",
-      "Ak",
-      "U.Ext",
-      "AR.Ext",
-      "2x",
-      "Mini",
-      "Vector",
-      "Grenade"
-    )
+
     val dirVector = dirUnitVector.cpy().rotate(dir).scl(height / 2)
     color = BLACK
     val backVector = dirVector.cpy().nor().scl(height / 2 + 200f)
