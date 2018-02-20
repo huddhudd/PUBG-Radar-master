@@ -107,6 +107,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
   lateinit var mapMiramarTiles: MutableMap<String, MutableMap<String, MutableMap<String, Texture>>>
   lateinit var mapTiles: MutableMap<String, MutableMap<String, MutableMap<String, Texture>>>
   lateinit var iconImages: Map<String, Texture>
+  lateinit var airdropimage: Texture
+  lateinit var deathboximage: Texture
+
   // lateinit var map: Texture
   lateinit var largeFont: BitmapFont
   lateinit var littleFont: BitmapFont
@@ -198,6 +201,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
 
     fontCamera = OrthographicCamera(initialWindowWidth, initialWindowWidth)
     alarmSound = Gdx.audio.newSound(Gdx.files.internal("Alarm.wav"))
+    deathboximage = Texture(Gdx.files.internal("icons/box.png"))
+    airdropimage = Texture(Gdx.files.internal("icons/airdrop.png"))
     // mapErangel = Texture(Gdx.files.internal("Erangel.bmp"))
     // mapMiramar = Texture(Gdx.files.internal("Miramar.bmp"))
     iconImages = mapOf(
@@ -564,6 +569,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     }
   }
 
+
   private fun ShapeRenderer.drawCorpse() {
     corpseLocation.values.forEach {
       val (x, y) = it
@@ -822,6 +828,11 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
   }
 
 
+
+
+
+
+
   fun ShapeRenderer.aimAtMe(it: renderInfo, selfX: Float, selfY: Float, currentTime: Long, zoom: Float) {
     //draw aim line
     val (actor, x, y, dir) = it
@@ -926,6 +937,9 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
     nameFont.dispose()
     largeFont.dispose()
     littleFont.dispose()
+    airdropimage.dispose()
+    deathboximage.dispose()
+
     // mapErangel.dispose()
     // mapMiramar.dispose()
     for ((key, image) in iconImages) {
