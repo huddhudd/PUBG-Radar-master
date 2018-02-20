@@ -242,8 +242,6 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       "Pain" to Texture(Gdx.files.internal("icons/Pain.png")),
       "Drink" to Texture(Gdx.files.internal("icons/Drink.png")),
       "Grenade" to Texture(Gdx.files.internal("icons/Grenade.png")),
-      "Airdrop" to Texture(Gdx.files.internal("icons/airdrop.png")),
-      "Deadbox" to Texture(Gdx.files.internal("icons/crate.png"))
     )
     mapErangelTiles = mutableMapOf()
     mapMiramarTiles = mutableMapOf()
