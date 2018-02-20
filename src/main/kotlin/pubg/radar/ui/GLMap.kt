@@ -151,7 +151,6 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
   override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
     if (button == RIGHT) {
     pinLocation.set(pinLocation.set(screenX.toFloat(), screenY.toFloat()).windowToMap())
-
       return true
     } else if (button == LEFT) {
       dragging = true
@@ -280,9 +279,6 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
   override fun render() {
     Gdx.gl.glClearColor(0.417f, 0.417f, 0.417f, 0f)
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-    // if (gameStarted)
-    //   map = if (isErangel) mapErangel else mapMiramar
-    // else return
     if (gameStarted)
       mapTiles = if (isErangel) mapErangelTiles else mapMiramarTiles
     else return
@@ -392,8 +388,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
                 syFix > 0 && syFix < windowHeight
               ) {
                 draw(iconImages[it], sx, syFix)
-                //draw(iconImages[it], sx, syFix)
-                itemFont.draw(spriteBatch,"$items" , sx, syFix)
+                //itemFont.draw(spriteBatch,"$items" , sx, syFix)
 
               } else {
 
@@ -641,17 +636,17 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
 
 */
           val ARifles = when (finalColor) {
-          ARiflesColor -> true //m4/ak/scar/m16 LIME GREEN
+          ARiflesColor -> false //m4/ak/scar/m16 LIME GREEN
           else -> false
           }
 
           val lvl3Armor = when (finalColor) {
-          rareArmorColor -> true //lvl3armor LIGHT BLUE
+          rareArmorColor -> false //lvl3armor LIGHT BLUE
           else -> false
           }
 
           val SniperGuns = when (finalColor) {
-          sniperColor -> true // mini/sks ORANGERED
+          sniperColor -> false // mini/sks ORANGERED
           else -> false
           }
 
@@ -661,17 +656,17 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
           }
 
           val UmpandPan = when (finalColor) {
-            UmpandPanColor ->  true //ump and Pan
+            UmpandPanColor ->  false //ump and Pan
             else -> false
           }
 
           val asSUP = when (finalColor) {
-            suppressorColor ->  true //AR and Sniper Suppressor
+            suppressorColor ->  false //AR and Sniper Suppressor
             else -> false
           }
 
           val Scopes = when (finalColor) {
-            rareScopeColor ->  true //4x / 8x Scopes
+            rareScopeColor ->  false //4x / 8x Scopes
             else -> false
           }
 
