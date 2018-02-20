@@ -419,8 +419,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       drawItem()
     //  drawItemNames()
       drawAirDrop(zoom)
-     // drawCorpse()
-      drawCorpse2()
+      drawCorpse()
+     // drawCorpse2()
 
       drawAPawn(typeLocation, selfX, selfY, zoom, currentTime)
     }
