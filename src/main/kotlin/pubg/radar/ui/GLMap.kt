@@ -571,11 +571,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
 
     private fun drawCorpse2() {
          corpseLocation.values.forEach { // DeathDropItemPackage -> corpseLocation[netGUID] = location
-           val dbX = corpseRadius
-           val dbY = (corpseRadius + 50f)
 
          spriteBatch.begin()
-         spriteBatch.draw(deathboximage,dbX,dbY)
+         spriteBatch.draw(deathboximage,0f,0f)
          spriteBatch.end()
 
        }
