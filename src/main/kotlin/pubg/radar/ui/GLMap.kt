@@ -421,7 +421,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       drawItem()
     //  drawItemNames()
       drawAirDrop(zoom)
-      drawCorpse()
+     // drawCorpse()
+      drawCorpse2()
+
       drawAPawn(typeLocation, selfX, selfY, zoom, currentTime)
     }
 
@@ -569,6 +571,19 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     }
   }
 
+    private fun drawCorpse2() {
+         corpseLocation.values.forEach { // DeathDropItemPackage -> corpseLocation[netGUID] = location
+           val dbX = corpseRadius
+           val dbY = (corpseRadius + 50f)
+
+         spriteBatch.begin()
+         spriteBatch.draw(deathboximage,dbX,dbY)
+         spriteBatch.end()
+
+       }
+
+
+  }
 
   private fun ShapeRenderer.drawCorpse() {
     corpseLocation.values.forEach {
@@ -786,6 +801,7 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
   }
 
   var lastPlayTime = System.currentTimeMillis()
+
   fun safeZoneHint() {
     if (PoisonGasWarningPosition.len() > 0) {
       val dir = PoisonGasWarningPosition.cpy().sub(selfCoords)
@@ -826,11 +842,6 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
   fun ShapeRenderer.circle(loc: Vector2, radius: Float, segments: Int) {
     circle(loc.x, loc.y, radius, segments)
   }
-
-
-
-
-
 
 
   fun ShapeRenderer.aimAtMe(it: renderInfo, selfX: Float, selfY: Float, currentTime: Long, zoom: Float) {
@@ -924,6 +935,7 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
     camera.setToOrtho(true, windowWidth * windowToMapUnit, windowHeight * windowToMapUnit)
     fontCamera.setToOrtho(false, windowWidth, windowHeight)
   }
+
 
   override fun pause() {
   }
