@@ -82,7 +82,7 @@ object CMD {
             SixSeatBoat to APawnCMD::process,
             TwoSeatCar to APawnCMD::process,
             TwoSeatBike to APawnCMD::process,
-            ThreeSeatCar to APawnCMD::process,
+            ThreeSeatBike to APawnCMD::process,
             FourSeatCar to APawnCMD::process,
             SixSeatCar to APawnCMD::process,
             Plane to APawnCMD::process,

@@ -217,8 +217,10 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       "98k" to Texture(Gdx.files.internal("icons/98k.png")),
       "Mini" to Texture(Gdx.files.internal("icons/Mini.png")),
       "m416" to Texture(Gdx.files.internal("icons/M4.png")),
+      "m16" to Texture(Gdx.files.internal("icons/M16.png")),
       "Scar" to Texture(Gdx.files.internal("icons/Scar.png")),
       "Ak" to Texture(Gdx.files.internal("icons/Ak.png")),
+      "DP" to Texture(Gdx.files.internal("icons/Dp.png")),
       "8x" to Texture(Gdx.files.internal("icons/8x.png")),
       "4x" to Texture(Gdx.files.internal("icons/4x.png")),
       "2x" to Texture(Gdx.files.internal("icons/2x.png")),
@@ -234,7 +236,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       "FirstAid" to Texture(Gdx.files.internal("icons/FirstAid.png")),
       "Pain" to Texture(Gdx.files.internal("icons/Pain.png")),
       "Drink" to Texture(Gdx.files.internal("icons/Drink.png")),
-      "Grenade" to Texture(Gdx.files.internal("icons/Grenade.png"))
+      "Grenade" to Texture(Gdx.files.internal("icons/Grenade.png")),
+      "Airdrop" to Texture(Gdx.files.internal("icons/airdrop.png")),
+      "Deadbox" to Texture(Gdx.files.internal("icons/crate.png"))
     )
     mapErangelTiles = mutableMapOf()
     mapMiramarTiles = mutableMapOf()
@@ -267,10 +271,10 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     param.color = WHITE
     littleFont = generator.generateFont(param)
     param.color = BLACK
-    param.size = 6
+    param.size = 10
     nameFont = generator.generateFont(param)
     param.color = ORANGE
-    param.size = 8
+    param.size = 10
     itemFont = generator.generateFont(param)
     generator.dispose()
   }
@@ -357,16 +361,15 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
         "S.Comp",
         "U.Supp",
         "Choke",
-        "V.Grip",
+      //  "V.Grip",
         "A.Grip",
-        "556",
         "762",
-        "Ak",
+      //  "Ak",
         "U.Ext",
         "AR.Ext",
         "2x",
-        "Mini",
         "Vector",
+        "Win94",
         "Grenade"
       )
       droppedItemLocation.values.asSequence().filter { it.second.isNotEmpty() }
@@ -379,22 +382,19 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           val syFix = windowHeight - sy
 
           var yOffset = 2
-          // println(items)
+          println(items) // print item names in console figure out why k98k/m16 isnt working...
           items.forEach {
-            if (it !in itemNameDrawBlacklist) {
-              if (
-                it in iconImages &&
-                sx > 0 && sx < windowWidth &&
-                syFix > 0 && syFix < windowHeight
-              ) {
-                draw(iconImages[it], sx, syFix)
-                //itemFont.draw(spriteBatch,"$items" , sx, syFix)
+          if (it !in itemNameDrawBlacklist) {
+          if ( it in iconImages && sx > 0 &&
+              sx < windowWidth && sy > 0 && sy < windowHeight ) {
+              draw(iconImages[it], sx, syFix)
+      //    draw(iconImages[it], sx, syFix)
+      //    itemFont.draw(spriteBatch,"$items" , sx, syFix)
 
-              } else {
-
+          } else {
+            itemFont.draw(spriteBatch, it, sx, syFix)
               }
-              yOffset = yOffset + 2
-            }//07230
+            }
           }
         }
     }
@@ -528,7 +528,10 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
         TwoSeatCar -> actorInfos?.forEach {
           drawVehicle(carColor, it, vehicle2Width, vehicle6Width)
         }
-        ThreeSeatCar -> actorInfos?.forEach {
+          TwoSeatBike -> actorInfos?.forEach {
+          drawVehicle(boatColor, it, vehicle4Width, vehicle6Width)
+        }
+          ThreeSeatBike -> actorInfos?.forEach {
           drawVehicle(carColor, it, vehicle2Width, vehicle6Width)
         }
         FourSeatCar -> actorInfos?.forEach {
@@ -593,11 +596,11 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           val (x, y) = it.first
           val items = it.second
           val finalColor = it.third
-                                          //"U.Supp" in items ||
+
           if (finalColor.a == 0f)
             finalColor.set(
                 when {
-                  "m416" in items || "Ak" in items || "Scar" in items || "m16" in items -> ARiflesColor
+                  "m416" in items || "Ak" in items || "Scar" in items || "m16" in items || "DP" in items -> ARiflesColor
                   "Mini" in items || "Sks" in items -> sniperColor
                   "AR.Supp" in items || "S.Supp" in items -> suppressorColor
                   "armor3" in items || "helmet3" in items -> rareArmorColor
@@ -613,19 +616,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
               )
 /*
 Adding a bunch of different shapes/colors for certain backgroundRadius
-
-m4/ak/scar/m16 Lime Green Circle
-lvl3armor LIGHT BLUE Circle
-
-mini/sks ORANGERED Square
-kar98k Brown Square
-
-ump and Pan Pink Triangle
-AR and Sniper Suppressor White Triangle
-4x / 8x Scopes Gold Triangle
-
-
 //legend
+
 largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
                               "Light Blue Circle = Level 3 Helm/Chest\n " +
                               "Orange Square = Mini/SKS\n"+
@@ -704,10 +696,13 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
 
             k98Gun -> {
               //kar98k Brown Square
-              color = finalColor
+              color = RED
+              //finalColor
+
               rect(x - backgroundRadius, y - backgroundRadius,
                       backgroundRadius * 2, backgroundRadius * 2)
-              color = finalColor
+              color = RED
+              //finalColor
               rect(x - radius, y - radius, radius * 2, radius * 2)
             }
 
@@ -874,7 +869,7 @@ largeFont.draw(spriteBatch,   "Light Green Circle = m4/ak/scar/m16\n" +
 
     if (drawSight) {
       color = sightColor
-      arc(x, y, directionRadius, dir - fov / 2, fov, 10)
+      arc(x, y, directionRadius, dir - fov / 3, fov, 3)
     }
   }
 

@@ -67,11 +67,13 @@ class Item {
                 "Kar98k" to "98k",
                 "SCAR-L" to "Scar",
                 "AK47" to "Ak",
+                "DP28" to "DP",
                 "SKS" to "Sks",
                 "Grenade" to "Grenade",
                 "Mini14" to "Mini",
                 "UMP" to "Ump",
                 "Vector" to "Vector",
+                "Winchester" to "Win94",
                 "Pan" to "Pan"
             ),
             "Ammo" to mapOf(

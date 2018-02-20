@@ -12,10 +12,10 @@ enum class Archetype { //order matters, it affects the order of drawing
   TwoSeatBoat,
   SixSeatBoat,
   TwoSeatCar,
-  ThreeSeatCar,
+  ThreeSeatBike,
+  TwoSeatBike,
   FourSeatCar,
   SixSeatCar,
-  TwoSeatBike,
   Plane,
   Player,
   Parachute,
@@ -31,8 +31,8 @@ enum class Archetype { //order matters, it affects the order of drawing
       archetype.contains("DroppedItemGroup") -> DroopedItemGroup
       archetype.contains("Aircraft") -> Plane
       archetype.contains("Parachute") -> Parachute
-//    archetype.contains(Regex("(bike|buggy|SideCar)", RegexOption.IGNORE_CASE)) -> TwoSeatCar
-      archetype.contains("sidecar", true) -> ThreeSeatCar
+      //archetype.contains(Regex("(bike|buggy|SideCar)", RegexOption.IGNORE_CASE)) -> TwoSeatCar
+      archetype.contains("sidecar", true) -> ThreeSeatBike
       archetype.contains("bike", true) -> TwoSeatBike
       archetype.contains("buggy", true) -> TwoSeatCar
       archetype.contains(Regex("(dacia|uaz|pickup)", RegexOption.IGNORE_CASE)) -> FourSeatCar
@@ -72,7 +72,7 @@ class Actor(val netGUID: NetworkGUID, val archetypeGUID: NetworkGUID, val archet
     SixSeatBoat,
     TwoSeatCar,
     TwoSeatBike,
-    ThreeSeatCar,
+    ThreeSeatBike,
     FourSeatCar,
     SixSeatCar,
     Plane,
