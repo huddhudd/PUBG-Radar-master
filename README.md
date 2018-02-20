@@ -1,6 +1,8 @@
 # PUBG-Radar
 PUBG-Radar by sniffering udp packet
 
+![alt text](https://github.com/Jerry1211/PUBG-Radar-master/blob/master/java_2018-02-20_14-26-00.png?raw=true)
+
 Written in Kotlin
 
 # Build
