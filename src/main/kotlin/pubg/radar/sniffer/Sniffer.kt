@@ -125,7 +125,7 @@ class Sniffer {
       }?.get(UdpPacket::class.java)
     }
 
-    fun sniffLocationOnline() {
+    fun sniffLocationOffline() {
       val handle = nif.openLive(snapLen, mode, timeout)
       val filter = when (sniffOption) {
         PortFilter -> "udp src portrange 7000-8999 or udp[4:2] = 52"
@@ -149,9 +149,9 @@ class Sniffer {
       }
     }
 
-    fun sniffLocationOffline(): Thread {
+    fun sniffLocationOnline(): Thread {
       return thread(isDaemon = true) {
-        val files = arrayOf("test13.pcap")
+        val files = arrayOf("c:\\wireshark\\test.pcap")
         for (file in files) {
           val handle = Pcaps.openOffline(file)
 
