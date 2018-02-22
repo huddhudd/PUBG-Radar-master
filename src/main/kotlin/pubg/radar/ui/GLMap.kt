@@ -384,8 +384,8 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
           val (sx, sy) = Vector2(x+16, y-16).mapToWindow()
           val syFix = windowHeight - sy
 
-          var yOffset = 2
-          println(items) // print item names in console figure out why k98k/m16 isnt working...
+          //var yOffset = 2
+          //println(items) //print items in console
           items.forEach {
           if (it !in itemNameDrawBlacklist) {
           if ( it in iconImages && sx > 0 &&
@@ -405,6 +405,7 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
     val zoom = camera.zoom
 
     Gdx.gl.glEnable(GL20.GL_BLEND)
+    //Redzone Color
     draw(Filled) {
       color = redZoneColor
       circle(RedZonePosition, RedZoneRadius, 100)
@@ -417,11 +418,9 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
       //draw self
       drawPlayer(LIME, tuple4(null, selfX, selfY, selfDir.angle()))
       drawItem()
-    //  drawItemNames()
+      //drawItemNames()
       drawAirDrop(zoom)
       drawCorpse()
-     // drawCorpse2()
-
       drawAPawn(typeLocation, selfX, selfY, zoom, currentTime)
     }
 
@@ -567,18 +566,6 @@ class GLMap : InputAdapter(), ApplicationListener, GameListener {
         }
       }
     }
-  }
-
-    private fun drawCorpse2() {
-         corpseLocation.values.forEach { // DeathDropItemPackage -> corpseLocation[netGUID] = location
-
-         spriteBatch.begin()
-         spriteBatch.draw(deathboximage,0f,0f)
-         spriteBatch.end()
-
-       }
-
-
   }
 
   private fun ShapeRenderer.drawCorpse() {
